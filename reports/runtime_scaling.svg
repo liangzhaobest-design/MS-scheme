@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="480">
+<rect width="100%" height="100%" fill="white"/>
+<text x="430.0" y="28" text-anchor="middle" font-size="20" font-family="Arial">Runtime scaling at n=107, q=2048</text>
+<line x1="80" y1="420.0" x2="840" y2="420.0" stroke="#eeeeee"/>
+<text x="70" y="424.0" text-anchor="end" font-size="11" font-family="Arial">0.0</text>
+<line x1="80" y1="346.0" x2="840" y2="346.0" stroke="#eeeeee"/>
+<text x="70" y="350.0" text-anchor="end" font-size="11" font-family="Arial">32.4</text>
+<line x1="80" y1="272.0" x2="840" y2="272.0" stroke="#eeeeee"/>
+<text x="70" y="276.0" text-anchor="end" font-size="11" font-family="Arial">64.9</text>
+<line x1="80" y1="198.0" x2="840" y2="198.0" stroke="#eeeeee"/>
+<text x="70" y="202.0" text-anchor="end" font-size="11" font-family="Arial">97.3</text>
+<line x1="80" y1="124.0" x2="840" y2="124.0" stroke="#eeeeee"/>
+<text x="70" y="128.0" text-anchor="end" font-size="11" font-family="Arial">129.8</text>
+<line x1="80" y1="50.0" x2="840" y2="50.0" stroke="#eeeeee"/>
+<text x="70" y="54.0" text-anchor="end" font-size="11" font-family="Arial">162.2</text>
+<line x1="80.0" y1="50" x2="80.0" y2="420" stroke="#f3f3f3"/>
+<text x="80.0" y="440" text-anchor="middle" font-size="11" font-family="Arial">2</text>
+<line x1="188.6" y1="50" x2="188.6" y2="420" stroke="#f3f3f3"/>
+<text x="188.6" y="440" text-anchor="middle" font-size="11" font-family="Arial">4</text>
+<line x1="405.7" y1="50" x2="405.7" y2="420" stroke="#f3f3f3"/>
+<text x="405.7" y="440" text-anchor="middle" font-size="11" font-family="Arial">8</text>
+<line x1="840.0" y1="50" x2="840.0" y2="420" stroke="#f3f3f3"/>
+<text x="840.0" y="440" text-anchor="middle" font-size="11" font-family="Arial">16</text>
+<line x1="80" y1="420" x2="840" y2="420" stroke="#333"/>
+<line x1="80" y1="50" x2="80" y2="420" stroke="#333"/>
+<polyline points="80.0,391.2 188.6,386.4 405.7,339.3 840.0,258.2" fill="none" stroke="#1f77b4" stroke-width="2.5"/>
+<circle cx="80.0" cy="391.2" r="3.5" fill="#1f77b4"/>
+<circle cx="188.6" cy="386.4" r="3.5" fill="#1f77b4"/>
+<circle cx="405.7" cy="339.3" r="3.5" fill="#1f77b4"/>
+<circle cx="840.0" cy="258.2" r="3.5" fill="#1f77b4"/>
+<line x1="620" y1="70" x2="640" y2="70" stroke="#1f77b4" stroke-width="2.5"/>
+<text x="648" y="74" font-size="12" font-family="Arial">Total signing (all signers)</text>
+<polyline points="80.0,419.2 188.6,418.8 405.7,418.4 840.0,417.6" fill="none" stroke="#ff7f0e" stroke-width="2.5"/>
+<circle cx="80.0" cy="419.2" r="3.5" fill="#ff7f0e"/>
+<circle cx="188.6" cy="418.8" r="3.5" fill="#ff7f0e"/>
+<circle cx="405.7" cy="418.4" r="3.5" fill="#ff7f0e"/>
+<circle cx="840.0" cy="417.6" r="3.5" fill="#ff7f0e"/>
+<line x1="620" y1="90" x2="640" y2="90" stroke="#ff7f0e" stroke-width="2.5"/>
+<text x="648" y="94" font-size="12" font-family="Arial">Aggregation</text>
+<polyline points="80.0,378.7 188.6,322.4 405.7,256.3 840.0,98.3" fill="none" stroke="#2ca02c" stroke-width="2.5"/>
+<circle cx="80.0" cy="378.7" r="3.5" fill="#2ca02c"/>
+<circle cx="188.6" cy="322.4" r="3.5" fill="#2ca02c"/>
+<circle cx="405.7" cy="256.3" r="3.5" fill="#2ca02c"/>
+<circle cx="840.0" cy="98.3" r="3.5" fill="#2ca02c"/>
+<line x1="620" y1="110" x2="640" y2="110" stroke="#2ca02c" stroke-width="2.5"/>
+<text x="648" y="114" font-size="12" font-family="Arial">Verification</text>
+<text x="460.0" y="465" text-anchor="middle" font-size="13" font-family="Arial">Number of signers</text>
+<text x="20" y="235.0" transform="rotate(-90,20,235.0)" text-anchor="middle" font-size="13" font-family="Arial">Time (ms)</text>
+</svg>
