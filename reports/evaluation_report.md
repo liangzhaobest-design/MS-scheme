@@ -17,10 +17,10 @@
 
 | Scheme | Revoke Update (ms) | Revoke Check (ms) | Verify (ms) |
 |---|---:|---:|---:|
-| IBMS-NTRU | 0.0004 | 0.0033 | 73.106 |
-| NI-IBMS-PKA | 0.0004 | 0.0036 | 50.936 |
-| CL-NTRU-MS-IRS (Ours) | 0.0005 | 0.0043 | 74.801 |
-| CLSAS-NTRU | 0.0007 | 0.0055 | 73.885 |
+| NI-IBMS-PKA | 0.0002 | 0.0012 | 15.647 |
+| IBMS-NTRU | 0.0002 | 0.0013 | 23.583 |
+| CL-NTRU-MS-IRS (Ours) | 0.0002 | 0.0013 | 23.048 |
+| CLSAS-NTRU | 0.0004 | 0.0013 | 22.680 |
 
 ## Table 3. 理论开销对比（渐进复杂度）
 
@@ -32,6 +32,17 @@
 | CL-NTRU-MS-IRS (Ours) | O(n) + 1·PolyScalar | O(t·n) | O(t·PolyMul) | O(n) (compressed) |
 | NI-IBMS-PKA | O(n) + 2·PolyScalar | O(t·n) | O(t·PolyMul) | O(n) |
 | CLSAS-NTRU | O(n) + 1·PolyScalar (per step) | sequential (implicit) | O(t·PolyMul) | O(n) (minimal) |
+
+## Table 4. 理论空间复杂度对比（密钥与签名）
+
+说明：以下空间复杂度按本仓库实现中的多项式/向量存储口径给出；n 为环维度，t 为签名者数量。
+
+| Scheme | User Secret Key Space | Public Key Space | Signature Space |
+|---|---|---|---|
+| IBMS-NTRU | O(n) | O(n) | O(n) + O(t) signer list |
+| CL-NTRU-MS-IRS (Ours) | O(n) (compact secret) | O(n) | O(n) + O(t) signer list |
+| NI-IBMS-PKA | O(n) + O(n) | O(n) aggregated/public key material | O(n) + O(n) + O(t) signer list |
+| CLSAS-NTRU | O(n) + O(n) | O(n) | O(n) + O(t) sequential signer list |
 
 ## Figures
 

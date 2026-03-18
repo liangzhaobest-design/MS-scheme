@@ -165,6 +165,20 @@ def _write_markdown(records: list[BenchmarkRecord], path: Path) -> None:
 
     lines.extend([
         "",
+        "## Table 4. 理论空间复杂度对比（密钥与签名）",
+        "",
+        "说明：以下空间复杂度按本仓库实现中的多项式/向量存储口径给出；n 为环维度，t 为签名者数量。",
+        "",
+        "| Scheme | User Secret Key Space | Public Key Space | Signature Space |",
+        "|---|---|---|---|",
+        "| IBMS-NTRU | O(n) | O(n) | O(n) + O(t) signer list |",
+        "| CL-NTRU-MS-IRS (Ours) | O(n) (compact secret) | O(n) | O(n) + O(t) signer list |",
+        "| NI-IBMS-PKA | O(n) + O(n) | O(n) aggregated/public key material | O(n) + O(n) + O(t) signer list |",
+        "| CLSAS-NTRU | O(n) + O(n) | O(n) | O(n) + O(t) sequential signer list |",
+    ])
+
+    lines.extend([
+        "",
         "## Figures",
         "",
         "![Size comparison](size_comparison.svg)",

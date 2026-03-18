@@ -19,7 +19,7 @@ python benchmarks/run_benchmark.py
 运行评测后输出到 `reports/`：
 
 - `benchmark_results.csv`：四方案统一格式原始数据（含撤销效率指标）
-- `evaluation_report.md`：突出“签名大小压缩 + 撤销效率”的对比表
+- `evaluation_report.md`：突出“签名大小压缩 + 撤销效率”的对比表，并包含理论时间/空间复杂度表
 - `size_comparison.svg`：签名长度对比图
 - `revoke_check_comparison.svg`：撤销检查开销对比图
 - `verify_comparison.svg`：验签耗时对比图
