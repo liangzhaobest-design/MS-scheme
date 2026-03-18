@@ -151,6 +151,20 @@ def _write_markdown(records: list[BenchmarkRecord], path: Path) -> None:
 
     lines.extend([
         "",
+        "## Table 3. 理论开销对比（渐进复杂度）",
+        "",
+        "说明：n 为环维度，t 为签名者数量。该表基于本仓库实现流程抽象（用于论文中的实现级理论对比）。",
+        "",
+        "| Scheme | Partial Sign | Aggregate | Verify | Signature Size |",
+        "|---|---|---|---|---|",
+        "| IBMS-NTRU | O(n) + 1·PolyMul | O(t·n) | O(t·PolyMul) | O(n) |",
+        "| CL-NTRU-MS-IRS (Ours) | O(n) + 1·PolyScalar | O(t·n) | O(t·PolyMul) | O(n) (compressed) |",
+        "| NI-IBMS-PKA | O(n) + 2·PolyScalar | O(t·n) | O(t·PolyMul) | O(n) |",
+        "| CLSAS-NTRU | O(n) + 1·PolyScalar (per step) | sequential (implicit) | O(t·PolyMul) | O(n) (minimal) |",
+    ])
+
+    lines.extend([
+        "",
         "## Figures",
         "",
         "![Size comparison](size_comparison.svg)",
