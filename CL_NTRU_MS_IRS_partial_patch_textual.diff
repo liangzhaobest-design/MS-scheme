@@ -1,0 +1,162 @@
+--- /mnt/data/CL_NTRU_MS_IRS_revised_final_strengthened_with_appendix_synced.tex	2026-03-25 05:38:22.630968003 +0000
++++ /mnt/data/CL_NTRU_MS_IRS_partial_patch_textual.tex	2026-03-25 05:50:13.257307728 +0000
+@@ -67,10 +67,8 @@
+ Multi-Signature Scheme on NTRU Lattices\\
+ with Iterative Rejection Sampling and Vector Aggregation}}
+ 
+-\author{%
+-  Technical Construction Document
+-}
+-\date{\today}
++\author{}
++\date{}
+ 
+ % ══════════════════════════════════════════════════════════
+ \begin{document}
+@@ -79,9 +77,9 @@
+ \begin{abstract}
+ Lattice-based multi-signature schemes still face a fundamental key-management trade-off. PKI-based constructions depend on certificate infrastructures that are costly to deploy and maintain, whereas identity-based alternatives suffer from \emph{key escrow} because the Key Generation Center (KGC) can derive each user's full secret key. Certificateless cryptography resolves this tension by splitting the signing capability between a KGC-issued partial key and a user-generated secret value.
+ 
+-We present \textbf{CL-NTRU-MS-IRS}, a certificateless lattice-based multi-signature scheme over NTRU lattices that, to the best of our knowledge, is the first to incorporate iterative rejection sampling (IRS) in this setting. The revised construction adopts \emph{public-key-bound partial keys}: for each registered public value~$p_i$, the KGC issues a partial key against $\tau_i = H_0(ID_i\|p_i)$, so the effective public key becomes $t_i = H_0(ID_i\|p_i)+p_i$. This registration discipline blocks the direct public-key-replacement forgery that arises in the unbound variant. At the protocol level, the scheme combines (i) a \emph{dual-source key architecture}, in which the effective signing key $\tilde{\bvec{s}}_i = \bvec{d}_i + \bvec{x}_i$ combines a KGC-issued partial key~$\bvec{d}_i$ with a user-chosen secret~$\bvec{x}_i$; (ii) a \emph{two-round commit--reveal protocol} with epoch-scoped validity binding, where the challenge hash includes the signed epoch and a fixed-size digest~$D_{\mathsf{ep}}$ of the published revocation snapshot so that signatures cannot migrate across snapshots; and (iii) \emph{iterative rejection sampling}, which processes non-zero challenge coefficients independently and improves the effective Gaussian ratio from $\alpha = r/\norm{\tilde{\bvec{s}}c}$ to $\alpha = r/\norm{\tilde{\bvec{s}}}$. The $N$ per-signer response vectors are aggregated into a single short vector~$\bvec{z}\in\Ring^2$, while only $N\kappa$ bits of IRS sign-decision metadata are needed for the verifier to reconstruct the per-signer ternary challenge polynomials.
++We present \textbf{CL-NTRU-MS-IRS}, a certificateless lattice-based multi-signature scheme over NTRU lattices that, to the best of our knowledge, is the first to incorporate iterative rejection sampling (IRS) in this setting. The construction adopts \emph{public-key-bound partial keys}: for each registered public value~$p_i$, the KGC issues a partial key against $\tau_i = H_0(ID_i\|p_i)$, so the effective public key becomes $t_i = H_0(ID_i\|p_i)+p_i$. This registration discipline blocks the direct public-key-replacement forgery that arises in the unbound variant. At the protocol level, the scheme combines (i) a \emph{dual-source key architecture}, in which the effective signing key $\tilde{\bvec{s}}_i = \bvec{d}_i + \bvec{x}_i$ combines a KGC-issued partial key~$\bvec{d}_i$ with a user-chosen secret~$\bvec{x}_i$; (ii) a \emph{two-round commit--reveal protocol} with epoch-scoped validity binding, where the challenge hash includes the signed epoch and a fixed-size digest~$D_{\mathsf{ep}}$ of the published revocation snapshot so that signatures cannot migrate across snapshots; and (iii) \emph{iterative rejection sampling}, which processes non-zero challenge coefficients independently and improves the effective Gaussian ratio from $\alpha = r/\norm{\tilde{\bvec{s}}c}$ to $\alpha = r/\norm{\tilde{\bvec{s}}}$. The $N$ per-signer response vectors are aggregated into a single short vector~$\bvec{z}\in\Ring^2$, while only $N\kappa$ bits of IRS sign-decision metadata are needed for the verifier to reconstruct the per-signer ternary challenge polynomials.
+ 
+-In the random oracle model, we prove Type~I security in a registered-key certificateless model and Type~II security against a malicious KGC, both reducing to Ring-SIS on NTRU lattices. The revocation mechanism follows immutable snapshot semantics: each signature is tied to the published digest of its own epoch, and later revocations affect only future epochs. Concretely, for $N=10$ signers, the most compact archived signature is obtained from Parameter Set~I and is approximately 880~bytes after combinatorial challenge encoding; however, that point is restart-heavy in end-to-end signing. We therefore treat Parameter Set~III as the recommended practical operating point: it is effectively non-aborting and retains a substantially stronger reduction-level margin. As expected, the concrete interpretation remains limited by the classical-ROM, forking-based proof methodology and by the coarseness of the current sign-bit emulation analysis.
++In the random oracle model, we prove Type~I security in a registered-key certificateless model and Type~II security against a malicious KGC, both reducing to Ring-SIS on NTRU lattices. The revocation mechanism follows immutable snapshot semantics: each signature is tied to the published digest of its own epoch, and later revocations affect only future epochs. Concretely, for $N=10$ signers, the most compact archived signature is obtained from Parameter Set~I and is approximately 880~bytes after combinatorial challenge encoding; however, that point is restart-heavy in end-to-end signing. We therefore treat Parameter Set~III as the recommended practical operating point: it is effectively non-aborting and retains a substantially stronger reduction-level margin. As expected, the concrete interpretation remains limited by the classical-ROM, forking-based proof methodology and by the reduction-oriented, bounded-norm sign-bit emulation used in the proof.
+ \end{abstract}
+ 
+ \smallskip
+@@ -116,7 +114,7 @@
+ 
+ \subsection{Contributions}
+ 
+-This revised manuscript emphasizes five main contributions:
++The paper makes five main contributions:
+ \begin{enumerate}[leftmargin=*,itemsep=2pt]
+ \item \textbf{First IRS-based certificateless lattice multi-signature with public-key-bound partial keys.}
+ CL-NTRU-MS-IRS integrates iterative rejection sampling~\cite{Gartner2025} into a certificateless NTRU multi-signature and, in the revised version, binds each KGC-issued partial key to the registered public value through $\tau_i = H_0(ID_i\|p_i)$. This closes the direct replacement-based forgery available in the unbound variant.
+@@ -125,10 +123,10 @@
+ Each signer's effective signing key $\tilde{\bvec{s}}_i = \bvec{d}_i + \bvec{x}_i$ combines a KGC-issued bound partial key with a user-generated secret value. The registration model ensures that public-key replacement is accompanied by proof of possession of the corresponding user secret, while the certificateless structure still avoids both certificate overhead and KGC escrow.
+ 
+ \item \textbf{Compact archived signatures, with a separate practical operating point.}
+-By combining IRS with full vector aggregation and combinatorial challenge encoding, the compact design point (Parameter Set~I) yields an archived multi-signature of about 880~bytes for $N=10$ signers. At the same time, we explicitly distinguish compactness from end-to-end practicality: Parameter Set~III is the recommended deployment point because it is effectively non-aborting and retains a stronger reduction-level margin.
++By combining IRS with full vector aggregation and combinatorial challenge encoding, the compact design point (Parameter Set~I) yields an archived multi-signature of about 880~bytes for $N=10$ signers. At the same time, we explicitly distinguish compactness from end-to-end practicality: Parameter Set~III is the recommended practical operating point because it is effectively non-aborting and retains a stronger reduction-level margin.
+ 
+ \item \textbf{Dual-adversary security with an exact revocation interface.}
+-In the random oracle model, we give a Type~I reduction in the registered-key certificateless model and a Type~II reduction against a malicious KGC, both to Ring-SIS on NTRU lattices. The revocation layer is specified through a canonical snapshot object $\mathsf{RA}_{\mathsf{ep}}=(D_{\mathsf{ep}},\mathsf{RL}_{\mathsf{ep}})$, where only the fixed-size digest $D_{\mathsf{ep}}$ enters the challenge hash while the published list $\mathsf{RL}_{\mathsf{ep}}$ supports explicit non-membership checks.
++In the random oracle model, we give a Type~I reduction in the registered-key certificateless model and a Type~II reduction against a malicious KGC, both to Ring-SIS on NTRU lattices. The proof uses only a reduction-oriented bounded-norm emulator for the IRS sign bits, rather than a standalone strong HVZK simulator. The revocation layer is specified through a canonical snapshot object $\mathsf{RA}_{\mathsf{ep}}=(D_{\mathsf{ep}},\mathsf{RL}_{\mathsf{ep}})$, where only the fixed-size digest $D_{\mathsf{ep}}$ enters the challenge hash while the published list $\mathsf{RL}_{\mathsf{ep}}$ supports explicit non-membership checks.
+ 
+ \item \textbf{Calibrated evaluation and matched comparisons.}
+ The revised evaluation separates structural comparisons from quantitative ones, removes the problematic previous Set~II candidate, foregrounds restart behavior and reduction-level security, and makes explicit that our strongest size claim concerns the \emph{final archived signature} rather than the \emph{interactive transcript}.
+@@ -266,6 +264,10 @@
+ Because the hash input already contains~$p_i$, replacing a public value invalidates the previously issued partial key. In the security model, such replacement is therefore treated through a \emph{registered-key} interface: any new public value must be accompanied by proof of possession of the matching user secret, and a fresh partial key must be issued against the new pair $(ID_i,p_i)$.
+ \end{remark}
+ 
++\begin{remark}[Lightweight PoP for registration]
++In a concrete deployment the registered-key interface can be instantiated by a simple Schnorr-like proof of possession on the NTRU relation: the user proves knowledge of $\bvec{x}_i$ such that $p_i = x_{i,1} + a\cdot x_{i,2} \bmod q$ using a one-shot Fiat--Shamir challenge of weight $\kappa_{\mathrm{PoP}}=1$. The PoP adds only one extra ring element to the registration transcript and is verified with a single NTT multiplication, preserving the overall compactness advantage of the main scheme.
++\end{remark}
++
+ \subsection{Security Model}\label{sec:secmodel}
+ 
+ Security in the certificateless setting must be analyzed against two fundamentally different adversary classes~\cite{AlRiyami2003}. A \emph{Type~I adversary} models an external attacker that does not know the master secret but may corrupt users and replace registered public keys. A \emph{Type~II adversary} models a malicious KGC that can generate partial keys for arbitrary identities, yet cannot access users' self-chosen secret values. We formalize both classes below in a registered-key certificateless model with epoch-scoped revocation.
+@@ -784,13 +786,16 @@
+   \Delta z^{(1)} + a\cdot \Delta z^{(2)} = \sum_{i\in L^*} t_i\cdot \Delta c_i' \pmod q.
+ \end{equation}
+ 
+-\begin{lemma}[Challenge Difference]\label{lem:cdiff}
+-Let $c^*, \hat c \in \calC$ be two distinct challenges with $c^* \ne \hat c$. For any signer~$i$, let $c_i^{*\prime}$ and $\hat c_i'$ be the ternary polynomials reconstructed from $(c^*, \bvec{b}_i^*)$ and $(\hat c, \hat{\bvec{b}}_i)$ respectively. Then:
+-\begin{enumerate}[label=(\roman*),itemsep=1pt]
+-\item $\Delta c_i' = c_i^{*\prime} - \hat c_i'$ has coefficients in $\{-2,-1,0,1,2\}$ and $\norm{\Delta c_i'} \le 2\sqrt{\kappa}$.
+-\item For the target signer $i^*$: $\Pr[\Delta c_{i^*}' = 0] \le 2^{-\kappa}$.
+-\end{enumerate}
++\begin{lemma}[Challenge Difference Geometry]\label{lem:cdiff}
++Let $c^*, \hat c \in \calC$ be two distinct challenges with $c^* \ne \hat c$. For any signer~$i$, let $c_i^{*\prime}$ and $\hat c_i'$ be the ternary polynomials reconstructed from $(c^*, \bvec{b}_i^*)$ and $(\hat c, \hat{\bvec{b}}_i)$ respectively. Then $\Delta c_i' = c_i^{*\prime} - \hat c_i'$ has coefficients in $\{-2,-1,0,1,2\}$ and satisfies $\norm{\Delta c_i'} \le 2\sqrt{\kappa}$.
++\end{lemma}
++
++\begin{lemma}[Non-zero forked challenge difference]\label{lem:nonzero}
++With the notation above, $\Delta c_i' \neq \bvec{0}$ for every signer~$i$.
+ \end{lemma}
++\begin{proof}
++Each reconstructed ternary polynomial $c_i'$ has support exactly equal to the support of the corresponding binary challenge~$c$ and satisfies $c_i' \equiv c \pmod 2$ coefficientwise. Since $c^* \neq \hat c$ in~$\calC$, their supports differ at some coefficient position~$j$. At that position, one of $c_i^{*\prime}$ and $\hat c_i'$ has coefficient $\pm 1$ while the other has coefficient~$0$, so $\Delta c_i'$ is non-zero.
++\end{proof}
+ 
+ Let $\mathcal K = L^*\setminus\{i^*\}$ be the set of all non-target signers in the forgery. Because the registered-key model reveals the corresponding user secret for every replaced public key, the reduction knows the effective signing key of every signer in~$\mathcal K$. Cancelling the target and known-key contributions from~\eqref{eq:diff}, define
+ \begin{align}
+@@ -801,7 +806,7 @@
+ \[
+   u_1 + a\cdot u_2 \equiv 0 \pmod q.
+ \]
+-If $(u_1,u_2)\ne \bvec{0}$, this is a valid Ring-SIS solution. The standard challenge-difference argument bounds the trivial-zero event by $2^{-\kappa}$.
++If $(u_1,u_2)\ne \bvec{0}$, this is a valid Ring-SIS solution. By Lemma~\ref{lem:nonzero}, the fork changes the target ternary challenge polynomial non-trivially; we conservatively retain the theorem-level negligible subtraction term to cover any remaining degenerate cancellation in the residual vector.
+ 
+ \paragraph{Norm bound.}
+ The Ring-SIS solution satisfies
+@@ -910,7 +915,7 @@
+ \[
+   u_1 + a\cdot u_2 \equiv 0 \pmod q.
+ \]
+-If $(u_1,u_2)\ne \bvec{0}$, this is a valid Ring-SIS solution on the challenge~$a$. As in the Type~I proof, the degenerate event $(u_1,u_2)=\bvec{0}$ occurs with probability at most $2^{-100}$ by the standard argument of~\cite{Lyubashevsky2012}.
++If $(u_1,u_2)\ne \bvec{0}$, this is a valid Ring-SIS solution on the challenge~$a$. As in the Type~I proof, Lemma~\ref{lem:nonzero} ensures that the forked ternary challenge difference is non-trivial, and we conservatively absorb any residual zero-cancellation event into the theorem-level negligible term.
+ 
+ \paragraph{Norm bound.}
+ The same estimate as in the Type~I case gives
+@@ -974,8 +979,8 @@
+ This substitution is not fully exact. What we use in the reductions is the weaker statement that, for the parameter ranges considered here, the resulting statistical deviation can be absorbed into a negligible term $\varepsilon_{\mathrm{sb}}$. In other words, the emulator is sufficient for the ROM game hops of Sections~\ref{sec:fullproof} and~\ref{sec:typeIIproof}, but a sharper posterior analysis would be needed to promote it to a stronger standalone zero-knowledge claim.
+ \end{proof}
+ 
+-\begin{remark}[Scope of the Transcript Emulator]
+-Lemma~\ref{lem:signbit_sim} should be read as a reduction-oriented emulation statement, not as a full characterization of the conditional distribution of sign bits given $(\bvec{z},c)$. Tightening this step is an explicit direction for future work and is one reason why the current concrete claims should be interpreted conservatively.
++\begin{remark}[Scope of the transcript emulator]
++Lemma~\ref{lem:signbit_sim} provides a \emph{reduction-oriented} bounded-norm emulator sufficient for the classical ROM game hops in Theorems~\ref{thm:security} and~\ref{thm:securityII}. It replaces the exact norm $\|\tilde{\bvec{s}}\|$ by the public bound $B_k$ when sampling sign bits. The resulting statistical deviation $\varepsilon_{\mathrm{sb}}$ is absorbed into the negligible terms of the proof but is \emph{not} promoted to a standalone HVZK property. A sharper posterior analysis of the sign-bit distribution conditioned on $(\bvec{z},c)$ is left as future work.
+ \end{remark}
+ 
+ \subsection{Tightness of the Security Reduction}\label{sec:tightness}
+@@ -1058,7 +1063,7 @@
+ \end{table}
+ 
+ \begin{remark}[Practical Parameter Recommendation]\label{rem:practical_params}
+-Table~\ref{tab:group_restart} highlights the central operational distinction between the two sets. Set~I achieves the most compact archived signature, but for $N=10$ it gives only about $0.53^{10} \approx 0.002$ group success per attempt, so one expects roughly $600$ full-group attempts on average. Pipelining lowers the cost of each restart, but it does not remove the repeated online communication. For practical interactive deployment, especially when $N\ge 5$, \textbf{Set~III is therefore the recommended operating point}: it is effectively non-aborting and completes in exactly two rounds end-to-end.
++Table~\ref{tab:group_restart} highlights the central operational distinction between the two sets. Set~I achieves the most compact archived signature, but for $N=10$ it gives only about $0.53^{10} \approx 0.002$ group success per attempt, so one expects roughly $600$ full-group attempts on average. Pipelining lowers the cost of each restart, but it does not remove the repeated online communication. For practical interactive deployment, especially when $N\ge 5$, \textbf{Set~III is therefore the recommended practical operating point}: it is effectively non-aborting and completes in exactly two rounds end-to-end.
+ \end{remark}
+ 
+ \subsection{Concrete Security Estimation}\label{sec:secestimate}
+@@ -1168,12 +1173,13 @@
+ DOTT~\cite{DOTT2021} & $\sim\!7$ KB & low-online / PKI baseline & 1 & standard PKI model \\
+ MuSig-L~\cite{MuSigL2022} & $\sim\!6$ KB & strongest online-latency baseline & 1 & key aggregation helps verification \\
+ DualMS~\cite{DualMS2023} & $\sim\!4.8$ KB & compact PKI baseline & 1 & strongest concrete PKI comparator \\
+-CLMS~\cite{ChenCLMS2021} & --- & interactive & --- & same certificateless/NTRU family \\
+-IBMS-pka~\cite{ChenIBMSpka2025} & --- & non-interactive & 1 & no certificates, but identity-based \\
++CLMS~\cite{ChenCLMS2021} & not directly comparable & interactive & not directly comparable & same certificateless/NTRU family \\
++IBMS-pka~\cite{ChenIBMSpka2025} & not directly comparable & non-interactive & 1 & no certificates, but identity-based \\
+ \textbf{Ours (Set~I)} & $\approx\!\mathbf{880}$ B & Round~2 still $\sim\!10$ KB for $N=10$ & $\approx 600$ & smallest archived signature \\
+-\textbf{Ours (Set~III)} & larger than Set~I & larger than Set~I & $1$ & recommended practical point \\
++\textbf{Ours (Set~III)} & larger than Set~I & larger than Set~I & $1$ & recommended practical operating point \\
+ \bottomrule
+-\end{tabular}
++\end{tabular}\\[4pt]
++{\small Note: ``not directly comparable'' indicates a different key-management model and/or the absence of the registered-key revocation interface used in this paper.}
+ \end{table}
+ 
+ The compactness advantage has a direct structural explanation. Iterative rejection sampling permits a narrower Gaussian parameter~$r$, which concentrates the coefficient distribution of the aggregated vector~$\bvec{z}$ and improves entropy-coding efficiency. Full vector aggregation then collapses $N$ response vectors into one while adding only $N\kappa$ bits of lightweight metadata.
+@@ -1263,11 +1269,11 @@
+ The $O(N)$ verification cost is inherent to our design because the verifier must process the per-signer ternary polynomials~$c_i'$. By contrast, schemes with public-key aggregation, such as MuSig-L~\cite{MuSigL2022}, can reduce verification to $O(1)$ polynomial multiplications once the keys have been aggregated offline. In applications where the same signature is verified repeatedly---for example, by blockchain full nodes---this linear factor may dominate. The per-signer ternary polynomials are precisely what allow IRS to achieve low rejection and compact signatures, so the resulting tension between verification efficiency and signature size is fundamental rather than accidental.
+ \end{remark}
+ 
+-\subsection{Prototype Runtime Evaluation}\label{sec:runtime_eval}
++\subsection{Prototype arithmetic profile (Set~I micro-benchmark)}\label{sec:runtime_eval}
+ 
+ Following the phase-based methodology commonly used in runtime studies, we report end-to-end runtime by operation phase rather than only asymptotic counts. In our executable prototype we profile five phases: \textsf{Setup}, \textsf{Registration+PartialKey} (for all users), \textsf{SigGen}, \textsf{SigVerify}, and \textsf{SigRevoke}. The arithmetic layer used for these local timings corresponds to the compact Set~I instantiation; a Set~III implementation would work over the larger $(n,q)$ pair and would therefore incur a different raw arithmetic cost while simultaneously removing restart overhead in distributed execution. We sweep the signer count $N \in \{5,10,15,20,25\}$ and repeat each configuration 8 times, reporting the mean and population standard deviation.
+ 
+-The benchmark runs in a single local workspace process on Windows~11 (build 10.0.26200) with Python~3.13.9 (AMD64). The results appear in Table~\ref{tab:runtime_proto}. We stress that these measurements reflect a research prototype, not a constant-time optimized C or assembly implementation, and should therefore be read as trend-level evidence only. They capture per-attempt local computation under the Set~I arithmetic profile, not network delay, and they do not include the multiplicative restart overhead that would arise under Set~I in a full distributed deployment. In our implementation, signing dominates the runtime and grows most rapidly with~$N$, verification grows more moderately, and revocation handling remains lightweight. Accordingly, the table is best read as a phase-by-phase local-cost profile rather than as an end-to-end latency claim for the interactive protocol.
++The benchmark runs in a single local workspace process on Windows~11 (build 10.0.26200) with Python~3.13.9 (AMD64). The results appear in Table~\ref{tab:runtime_proto}. We stress that these measurements reflect a research prototype, not a constant-time optimized C or assembly implementation, and should therefore be read as trend-level evidence only. They capture per-attempt local computation under the Set~I arithmetic profile, not network delay, and they do not include the multiplicative restart overhead that would arise under Set~I in a full distributed deployment. In our implementation, signing dominates the runtime and grows most rapidly with~$N$, verification grows more moderately, and revocation handling remains lightweight. Accordingly, the table is best read as a phase-by-phase local-cost profile rather than as an end-to-end latency claim for the interactive protocol. The reported timings use the arithmetic of Set~I. A full end-to-end evaluation of Set~III (including network and zero-restart behavior) is left for future implementation work.
+ 
+ \begin{table}[ht]
+ \centering
+@@ -1297,7 +1303,7 @@
+ \smallskip
+ \begin{tabular}{@{}lll@{}}
+ \toprule
+-\textbf{Round} & \textbf{Per-signer broadcast} & \textbf{Total} \\
++\textbf{Round} & \textbf{Per-signer sent to combiner} & \textbf{Total round traffic} \\
+ \midrule
+ Round~1 (commitment) & $|\delta_i| = 32$ bytes (hash) & $32N$ bytes \\
+ Round~2 (response) & $w_i$: $n\lceil\log_2 q\rceil/8$ B + $(\bvec{z}_i,\bvec{b}_i)$ & $\sim N \times 0.9$ KB \\
