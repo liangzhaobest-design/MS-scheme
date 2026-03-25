@@ -1,0 +1,345 @@
+--- /mnt/data/CL_NTRU_MS_IRS_partial_patch_textual.tex	2026-03-25 06:31:56.816522695 +0000
++++ /mnt/data/CL_NTRU_MS_IRS_bk_extractor_table3_reworked.tex	2026-03-25 06:47:40.444426658 +0000
+@@ -79,7 +79,7 @@
+ 
+ We present \textbf{CL-NTRU-MS-IRS}, a certificateless lattice-based multi-signature scheme over NTRU lattices that, to the best of our knowledge, is the first to incorporate iterative rejection sampling (IRS) in this setting. The construction adopts \emph{public-key-bound partial keys}: for each registered public value~$p_i$, the KGC issues a partial key against $\tau_i = H_0(ID_i\|p_i)$, so the effective public key becomes $t_i = H_0(ID_i\|p_i)+p_i$. This registration discipline blocks the direct public-key-replacement forgery that arises in the unbound variant. At the protocol level, the scheme combines (i) a \emph{dual-source key architecture}, in which the effective signing key $\tilde{\bvec{s}}_i = \bvec{d}_i + \bvec{x}_i$ combines a KGC-issued partial key~$\bvec{d}_i$ with a user-chosen secret~$\bvec{x}_i$; (ii) a \emph{two-round commit--reveal protocol} with epoch-scoped validity binding, where the challenge hash includes the signed epoch and a fixed-size digest~$D_{\mathsf{ep}}$ of the published revocation snapshot so that signatures cannot migrate across snapshots; and (iii) \emph{iterative rejection sampling}, which processes non-zero challenge coefficients independently and improves the effective Gaussian ratio from $\alpha = r/\norm{\tilde{\bvec{s}}c}$ to $\alpha = r/\norm{\tilde{\bvec{s}}}$. The $N$ per-signer response vectors are aggregated into a single short vector~$\bvec{z}\in\Ring^2$, while only $N\kappa$ bits of IRS sign-decision metadata are needed for the verifier to reconstruct the per-signer ternary challenge polynomials.
+ 
+-In the random oracle model, we prove Type~I security in a registered-key certificateless model and Type~II security against a malicious KGC, both reducing to Ring-SIS on NTRU lattices. The revocation mechanism follows immutable snapshot semantics: each signature is tied to the published digest of its own epoch, and later revocations affect only future epochs. Concretely, for $N=10$ signers, the most compact archived signature is obtained from Parameter Set~I and is approximately 880~bytes after combinatorial challenge encoding; however, that point is restart-heavy in end-to-end signing. We therefore treat Parameter Set~III as the recommended practical operating point: it is effectively non-aborting and retains a substantially stronger reduction-level margin. As expected, the concrete interpretation remains limited by the classical-ROM, forking-based proof methodology and by the reduction-oriented, bounded-norm sign-bit emulation used in the proof.
++In the random oracle model, we prove Type~I security in a registered-key certificateless model and Type~II security against a malicious KGC, both reducing to Ring-SIS on NTRU lattices. The revocation mechanism follows immutable snapshot semantics: each signature is tied to the published digest of its own epoch, and later revocations affect only future epochs. Concretely, for $N=10$ signers, the most compact archived signature is obtained from Parameter Set~I and is approximately 880~bytes after combinatorial challenge encoding; however, that point is operationally fragile in end-to-end signing. We therefore treat Parameter Set~III as the recommended practical operating point. The current concrete interpretation remains limited by the classical-ROM, forking-based proof methodology, by the reduction-oriented bounded-norm sign-bit emulation, and by the fact that the present theorem-level Ring-SIS norm bound is still too loose for a sharp concrete reduction claim.
+ \end{abstract}
+ 
+ \smallskip
+@@ -123,13 +123,13 @@
+ Each signer's effective signing key $\tilde{\bvec{s}}_i = \bvec{d}_i + \bvec{x}_i$ combines a KGC-issued bound partial key with a user-generated secret value. The registration model ensures that public-key replacement is accompanied by proof of possession of the corresponding user secret, while the certificateless structure still avoids both certificate overhead and KGC escrow.
+ 
+ \item \textbf{Compact archived signatures, with a separate practical operating point.}
+-By combining IRS with full vector aggregation and combinatorial challenge encoding, the compact design point (Parameter Set~I) yields an archived multi-signature of about 880~bytes for $N=10$ signers. At the same time, we explicitly distinguish compactness from end-to-end practicality: Parameter Set~III is the recommended practical operating point because it is effectively non-aborting and retains a stronger reduction-level margin.
++By combining IRS with full vector aggregation and combinatorial challenge encoding, the compact design point (Parameter Set~I) yields an archived multi-signature of about 880~bytes for $N=10$ signers. At the same time, we explicitly distinguish compactness from end-to-end practicality: Parameter Set~III is the recommended practical operating point, while Set~I should be read primarily as a compact archival point rather than as the default interactive setting.
+ 
+ \item \textbf{Dual-adversary security with an exact revocation interface.}
+-In the random oracle model, we give a Type~I reduction in the registered-key certificateless model and a Type~II reduction against a malicious KGC, both to Ring-SIS on NTRU lattices. The proof uses only a reduction-oriented bounded-norm emulator for the IRS sign bits, rather than a standalone strong HVZK simulator. The revocation layer is specified through a canonical snapshot object $\mathsf{RA}_{\mathsf{ep}}=(D_{\mathsf{ep}},\mathsf{RL}_{\mathsf{ep}})$, where only the fixed-size digest $D_{\mathsf{ep}}$ enters the challenge hash while the published list $\mathsf{RL}_{\mathsf{ep}}$ supports explicit non-membership checks.
++In the random oracle model, we give game-based reductions for both Type~I adversaries in the registered-key certificateless model and Type~II adversaries against a malicious KGC, both to Ring-SIS on NTRU lattices. The proof uses only a reduction-oriented bounded-norm emulator for the IRS sign bits, rather than a standalone strong HVZK simulator. The revocation layer is specified through a canonical snapshot object $\mathsf{RA}_{\mathsf{ep}}=(D_{\mathsf{ep}},\mathsf{RL}_{\mathsf{ep}})$, where only the fixed-size digest $D_{\mathsf{ep}}$ enters the challenge hash while the published list $\mathsf{RL}_{\mathsf{ep}}$ supports explicit non-membership checks.
+ 
+ \item \textbf{Calibrated evaluation and matched comparisons.}
+-The revised evaluation separates structural comparisons from quantitative ones, removes the problematic previous Set~II candidate, foregrounds restart behavior and reduction-level security, and makes explicit that our strongest size claim concerns the \emph{final archived signature} rather than the \emph{interactive transcript}.
++The revised evaluation separates structural comparisons from quantitative ones, removes the problematic previous Set~II candidate, foregrounds restart behavior and the current limits of concrete security calibration, and makes explicit that our strongest size claim concerns the \emph{final archived signature} rather than the \emph{interactive transcript}.
+ \end{enumerate}
+ 
+ \paragraph{Variant convention.}
+@@ -498,7 +498,7 @@
+ 
+ In the multi-signature setting, this attack surface is amplified. First, adversarial co-signers can observe response latency, which may correlate with the number of IRS iterations completed before acceptance or rejection. Second, restart frequency depends on $\norm{\tilde{\bvec{s}}}$ and may therefore leak information about the effective-key norm. Third, if IRS rejects at some step $k < \kappa$, the specific value of~$k$ may reveal structural information about the corresponding secret-dependent column.
+ 
+-Possible mitigations include: (a)~adding randomized delays to smooth timing differences, although this is only a partial defense; (b)~using Parameter Set~III, where $\alpha \ge 4$ and rejection is negligible ($< 2^{-100}$), effectively removing restart-based leakage; and (c)~designing a constant-iteration-count variant that always executes all $\kappa$ steps and applies the final decision uniformly. We therefore view a provably constant-time IRS implementation as important future work (Section~\ref{sec:conclusion}), and for deployment settings with meaningful side-channel risk we recommend Parameter Set~III.
++Possible mitigations include: (a)~adding randomized delays to smooth timing differences, although this is only a partial defense; (b)~using Parameter Set~III, which is the only retained point with a comfortable operational margin once the conservative effective-key accounting is made explicit; and (c)~designing a constant-iteration-count variant that always executes all $\kappa$ steps and applies the final decision uniformly. We therefore view a provably constant-time IRS implementation as important future work (Section~\ref{sec:conclusion}), and for deployment settings with meaningful side-channel risk we recommend Parameter Set~III.
+ \end{remark}
+ 
+ \subsection{Signature Aggregation}\label{sec:aggsig}
+@@ -640,7 +640,7 @@
+ \subsection{Termination and Expected Restart Count}
+ 
+ \begin{proposition}[Termination]\label{prop:termination}
+-For a single signer, $\texttt{IterRejectSample}$ succeeds with probability $p_{\mathrm{succ}} = M_\alpha^{-\kappa}$. The signing process with restarts therefore terminates in expected $M_\alpha^{\kappa}$ attempts. For Parameter Set~I ($\alpha\approx 1.54$, $\kappa=58$), this gives $p_{\mathrm{succ}} \approx 0.53$ and an expected restart count of about $0.88$.
++For a single signer, $\texttt{IterRejectSample}$ succeeds with probability $p_{\mathrm{succ}} = M_\alpha^{-\kappa}$. The signing process with restarts therefore terminates in expected $M_\alpha^{\kappa}$ attempts.
+ \end{proposition}
+ 
+ \begin{proof}
+@@ -648,13 +648,13 @@
+ 
+ Whenever a failure occurs, the signer restarts from Round~1. Since successive attempts are independent, the number of attempts follows a geometric distribution with mean $M_\alpha^{\kappa}$.
+ 
+-For Parameter Set~I, $\alpha = 128/83.3 \approx 1.536$. Evaluating~\eqref{eq:Malpha} gives $M_\alpha \approx 1.0109$, and therefore $p_{\mathrm{succ}} \approx 1.0109^{-58} \approx 0.531$. The expected number of restarts is thus approximately $0.88$.
++No concrete parameter set is substituted directly into Proposition~\ref{prop:termination} here, because the paper distinguishes between the conservative proof-level ratio $\alpha_{\mathrm{eff}} := r/B_k$ and the separate user-secret proxy ratio $\alpha_{\mathrm{proxy}} := r/B_x$ used later for implementation-oriented restart discussion.
+ \end{proof}
+ 
+ \begin{remark}[Restart Semantics]\label{rem:independent_restart}
+ If signer~$i$ obtains $\bot$ from iterative rejection sampling, a fresh signing attempt is required. Because the challenge $c = H_2(w, m, L, \mathsf{ep}, D_{\mathsf{ep}})$ depends on the aggregate commitment $w = \sum_j w_j$, signer~$i$ cannot simply resample $\bvec{y}_i$ while keeping the other commitments fixed: changing $w_i$ would change~$w$ and therefore invalidate the challenge. Consequently, \emph{all signers must discard their current state and restart from Round~1 with fresh randomness}.
+ 
+-This behavior is inherent to any two-round Fiat--Shamir multi-signature scheme in which the challenge depends on all commitments, including DOTT~\cite{DOTT2021} and MuSig-L~\cite{MuSigL2022}. In practice, the cost can be reduced in two ways: (i)~through \emph{pipelining}, where each signer precomputes and stores several commitment tuples $(\bvec{y}_i^{(k)}, w_i^{(k)}, \delta_i^{(k)})$ so that a restart advances to the next cached tuple rather than triggering fresh Gaussian sampling; and (ii)~by choosing parameters with very low rejection probability. For example, Parameter Set~I gives $p_{\mathrm{succ}} \approx 0.53$ per signer, so with $N=10$ signers the probability that \emph{all} signers succeed in one attempt is only about $0.53^{10} \approx 0.002$, implying roughly $600$ group attempts on average. This strongly motivates Parameter Set~III, where $p_{\mathrm{succ}} \approx 1$ and restarts are effectively eliminated.
++This behavior is inherent to any two-round Fiat--Shamir multi-signature scheme in which the challenge depends on all commitments, including DOTT~\cite{DOTT2021} and MuSig-L~\cite{MuSigL2022}. In practice, the cost can be reduced in two ways: (i)~through \emph{pipelining}, where each signer precomputes and stores several commitment tuples $(\bvec{y}_i^{(k)}, w_i^{(k)}, \delta_i^{(k)})$ so that a restart advances to the next cached tuple rather than triggering fresh Gaussian sampling; and (ii)~by choosing parameters with very low rejection probability. Section~\ref{sec:parameters} reports the earlier-draft restart heuristic explicitly as a user-secret proxy analysis, while the proof itself continues to use the conservative effective-key bound $B_k = B_d + B_x$.
+ \end{remark}
+ 
+ Combining Propositions~\ref{prop:algebraic}--\ref{prop:termination} completes the proof of Theorem~\ref{thm:correct}. $\hfill\square$
+@@ -669,7 +669,7 @@
+ \subsection{Main Theorems}\label{sec:mainthm}
+ 
+ \begin{theorem}[Type~I EUF-CMA Security in the Registered-Key Model]\label{thm:security}
+-Let $H_0$, $H_1$, $H_2$, $H_{\mathsf{rev}}$, and $H_{\mathsf{snap}}$ be modeled as independent random oracles via domain separation. If there exists a PPT Type~I adversary $\calA_{\mathrm{I}}$ with advantage $\epsilon_{\mathrm{I}}$ in the game of Definition~\ref{def:typeI}, then there exists an algorithm~$\calB_{\mathrm{I}}$ that solves the $\mathrm{RSIS}^{\mathrm{NTRU}}_{q,\beta}$ problem, with $\beta \le 2B_s + 2\kappa B_k(|L^*|+1)$, such that, writing $\varepsilon_3 := \Pr[W_3]$ for the Type~I game sequence,
++Let $H_0$, $H_1$, $H_2$, $H_{\mathsf{rev}}$, and $H_{\mathsf{snap}}$ be modeled as independent random oracles via domain separation. If there exists a PPT Type~I adversary $\calA_{\mathrm{I}}$ with advantage $\epsilon_{\mathrm{I}}$ in the game of Definition~\ref{def:typeI}, then there exists an algorithm~$\calB_{\mathrm{I}}$ that solves the $\mathrm{RSIS}^{\mathrm{NTRU}}_{q,\beta}$ problem, with $\beta \le 2B_s + 2\kappa B_k|L^*|$, such that, writing $\varepsilon_3 := \Pr[W_3]$ for the Type~I game sequence,
+ \[
+   \Pr[\calB_{\mathrm{I}}\text{ succeeds}] \ge \varepsilon_3\!\left(\frac{\varepsilon_3}{q_H+q_S} - \frac{1}{|\calC|}\right) - 2^{-\kappa},
+ \]
+@@ -681,7 +681,7 @@
+ \end{theorem}
+ 
+ \begin{theorem}[Type~II EUF-CMA Security]\label{thm:securityII}
+-Under the same random-oracle modeling, if there exists a PPT Type~II adversary $\calA_{\mathrm{II}}$ with non-negligible advantage $\epsilon_{\mathrm{II}}$ in the game of Definition~\ref{def:typeII}, then there exists an algorithm~$\calB_{\mathrm{II}}$ that solves the $\mathrm{RSIS}^{\mathrm{NTRU}}_{q,\beta'}$ problem, with $\beta' \le 2B_s + 2\kappa B_k(|L^*|+1)$, such that, writing $\varepsilon_3 := \Pr[W_3]$ for the Type~II game sequence,
++Under the same random-oracle modeling, if there exists a PPT Type~II adversary $\calA_{\mathrm{II}}$ with non-negligible advantage $\epsilon_{\mathrm{II}}$ in the game of Definition~\ref{def:typeII}, then there exists an algorithm~$\calB_{\mathrm{II}}$ that solves the $\mathrm{RSIS}^{\mathrm{NTRU}}_{q,\beta'}$ problem, with $\beta' \le 2B_s + 2\kappa B_k|L^*|$, such that, writing $\varepsilon_3 := \Pr[W_3]$ for the Type~II game sequence,
+ \[
+   \Pr[\calB_{\mathrm{II}}\text{ succeeds}] \ge \varepsilon_3\!\left(\frac{\varepsilon_3}{q_H+q_S} - \frac{1}{|\calC|}\right) - 2^{-\kappa},
+ \]
+@@ -693,7 +693,7 @@
+ \end{theorem}
+ 
+ \begin{remark}[Comparison of the Two Reductions]
+-The two proofs share the same overall architecture: they guess a target signer, simulate target-signature transcripts through the statistical IRS emulator of Lemma~\ref{lem:signbit_sim}, embed the Ring-SIS challenge as the master public key~$a$, and then apply generalized forking to extract a solution. The main structural difference is now the registration interface. In the Type~I proof, public-key replacement is handled inside the registered-key model, so any replaced public value arrives together with the corresponding user secret and can therefore be treated as a known-key signer. In the Type~II proof, no replacement oracle exists, so the argument is slightly simpler.
++The two proofs share the same overall architecture: they guess a target signer, simulate target-signature transcripts through the statistical IRS emulator of Lemma~\ref{lem:signbit_sim}, embed the Ring-SIS challenge as the master public key~$a$, and then apply generalized forking to extract a solution. In both cases the reduction internally maintains a full effective key for every currently registered pair: the lazy-programmed $H_0$/partial-key table stores the KGC component, while the user component is either sampled at honest registration time or supplied explicitly during registered-key replacement. The main structural difference is therefore only the interface bookkeeping. Type~I must track public-key replacement inside the registered-key model, whereas Type~II has no replacement oracle.
+ \end{remark}
+ 
+ \subsection{Proof of Theorem~\ref{thm:security} (Type~I)}\label{sec:fullproof}
+@@ -764,7 +764,7 @@
+   \qquad
+   p := x_{ID,p,1}+a\,x_{ID,p,2} \bmod q,
+ \]
+-and stores the corresponding secret. Crucially, when $\calA_{\mathrm{I}}$ invokes the replacement oracle, it must provide a valid pair $(p_i',\bvec{x}_i')$ satisfying $p_i' = x_{i,1}'+a x_{i,2}' \bmod q$. The challenger therefore learns the user secret for every replaced registered key as part of the oracle interface. Consequently, every non-target signer that appears in the final forgery belongs to the known-key set~$\mathcal K$; there is no residual unknown-secret set in the revised model. Let $\varepsilon_{\mathrm{stat},2}$ denote the additional statistical distance introduced by the trapdoor-free embedding, so that
++and stores the corresponding secret. Crucially, when $\calA_{\mathrm{I}}$ invokes the replacement oracle, it must provide a valid pair $(p_i',\bvec{x}_i')$ satisfying $p_i' = x_{i,1}'+a x_{i,2}' \bmod q$. The challenger therefore learns the user secret for every replaced registered key as part of the oracle interface. Consequently, for every currently registered pair $(ID,p)$---including the eventual target signer---the reduction internally knows both the lazy-programmed partial key $\bvec{d}_{ID,p}$ and the matching user secret $\bvec{x}_{ID,p}$. The target condition in Definition~\ref{def:typeI} only states that the adversary never extracted that material; it does not prevent the simulator from storing it internally. Let $\varepsilon_{\mathrm{stat},2}$ denote the additional statistical distance introduced by the trapdoor-free embedding, so that
+ \[
+   \bigl|\Pr[W_3]-\Pr[W_2]\bigr| \le \varepsilon_{\mathrm{stat},2}.
+ \]
+@@ -797,22 +797,22 @@
+ Each reconstructed ternary polynomial $c_i'$ has support exactly equal to the support of the corresponding binary challenge~$c$ and satisfies $c_i' \equiv c \pmod 2$ coefficientwise. Since $c^* \neq \hat c$ in~$\calC$, their supports differ at some coefficient position~$j$. At that position, one of $c_i^{*\prime}$ and $\hat c_i'$ has coefficient $\pm 1$ while the other has coefficient~$0$, so $\Delta c_i'$ is non-zero.
+ \end{proof}
+ 
+-Let $\mathcal K = L^*\setminus\{i^*\}$ be the set of all non-target signers in the forgery. Because the registered-key model reveals the corresponding user secret for every replaced public key, the reduction knows the effective signing key of every signer in~$\mathcal K$. Cancelling the target and known-key contributions from~\eqref{eq:diff}, define
++For every signer $i\in L^*$, the reduction knows the full effective signing key $\tilde{\bvec{s}}_i = \bvec{d}_i + \bvec{x}_i$: the KGC component came from the lazy-programmed $H_0$/partial-key table, and the user component was either sampled during honest registration or supplied by the replacement oracle. Cancelling all signer contributions from~\eqref{eq:diff}, define
+ \begin{align}
+-  u_1 &= \Delta z^{(1)} - \tilde{s}_{1}^*\cdot \Delta c_{i^*}' - \sum_{i\in\mathcal K} \tilde{s}_{i,1}\cdot \Delta c_i', \label{eq:u1}\\
+-  u_2 &= \Delta z^{(2)} - \tilde{s}_{2}^*\cdot \Delta c_{i^*}' - \sum_{i\in\mathcal K} \tilde{s}_{i,2}\cdot \Delta c_i'. \label{eq:u2}
++  u_1 &= \Delta z^{(1)} - \sum_{i\in L^*} \tilde{s}_{i,1}\cdot \Delta c_i', \label{eq:u1}\\
++  u_2 &= \Delta z^{(2)} - \sum_{i\in L^*} \tilde{s}_{i,2}\cdot \Delta c_i'. \label{eq:u2}
+ \end{align}
+ Then
+ \[
+   u_1 + a\cdot u_2 \equiv 0 \pmod q.
+ \]
+-If $(u_1,u_2)\ne \bvec{0}$, this is a valid Ring-SIS solution. By Lemma~\ref{lem:nonzero}, the fork changes the target ternary challenge polynomial non-trivially; we conservatively retain the theorem-level negligible subtraction term to cover any remaining degenerate cancellation in the residual vector.
++If $(u_1,u_2)\ne \bvec{0}$, this is a valid Ring-SIS solution. Lemma~\ref{lem:nonzero} guarantees that the forked challenge difference is non-trivial signerwise; we conservatively retain the theorem-level negligible subtraction term to cover any remaining degenerate cancellation in the residual vector.
+ 
+ \paragraph{Norm bound.}
+ The Ring-SIS solution satisfies
+ \begin{align}
+   \norm{(u_1,u_2)}
+-  &\le 2B_s + 2\kappa B_k\cdot(|\mathcal K|+1) \le \beta. \label{eq:norm_bound_detail}
++  &\le 2B_s + 2\kappa B_k\cdot|L^*| \le \beta. \label{eq:norm_bound_detail}
+ \end{align}
+ 
+ \paragraph{Probability summary.}
+@@ -920,7 +920,7 @@
+ \paragraph{Norm bound.}
+ The same estimate as in the Type~I case gives
+ \[
+-  \norm{(u_1,u_2)} \le 2B_s + 2\kappa B_k\cdot(|L^*|+1) \le \beta'.
++  \norm{(u_1,u_2)} \le 2B_s + 2\kappa B_k\cdot|L^*| \le \beta'.
+ \]
+ 
+ \paragraph{Probability summary.}
+@@ -991,7 +991,7 @@
+ \item \textbf{Forking-lemma loss} $O(q_H+q_S)$: the generalized forking lemma must identify, among all hash queries, the specific query whose answer becomes the forgery challenge.
+ \end{enumerate}
+ 
+-This level of loss is consistent with the state of the art for lattice-based signatures proved through forking-style arguments, including Bellare--Neven~\cite{BellareNeven2006}, BLISS~\cite{BLISS2013}, and HAETAE~\cite{HAETAE2024}. Section~\ref{sec:secestimate} quantifies the resulting effect on concrete security and suggests that Parameter Set~III is the appropriate choice when one wants a $\ge 128$-bit reduction-level estimate under simplified accounting.
++This level of loss is consistent with the state of the art for lattice-based signatures proved through forking-style arguments, including Bellare--Neven~\cite{BellareNeven2006}, BLISS~\cite{BLISS2013}, and HAETAE~\cite{HAETAE2024}. Section~\ref{sec:secestimate} records the current theorem-level bookkeeping and explains why we refrain from claiming concrete reduction-level bits from the present extractor bound.
+ 
+ \begin{remark}[Security in the QROM]\label{rem:qrom}
+ The present proof is carried out in the classical random oracle model (ROM). Extending it to the quantum random oracle model (QROM) faces three compounding obstacles.
+@@ -1014,9 +1014,17 @@
+ 
+ \subsection{Parameter Selection Principles}
+ 
+-Parameter selection in our scheme balances three competing objectives: security, compactness, and signing efficiency. The ring dimension~$n$ and modulus~$q$ determine the hardness of the underlying Ring-SIS instance. The user-secret sampling parameter~$\sigma_u$, together with~$s_d$, determines the effective-key bound~$B_k$, which in turn controls the ratio $\alpha = r/B_k$ and hence the rejection probability. The signature Gaussian parameter~$r$ affects both the distribution of the response vectors and the final encoded size. Finally, the challenge Hamming weight~$\kappa$ governs the number of iterative rejection-sampling steps: increasing~$\kappa$ enlarges the challenge space $|\calC| = \binom{n}{\kappa}$ and thus benefits security, but it also increases the overall rejection probability $1 - M_\alpha^{-\kappa}$.
++Parameter selection in our scheme balances three competing objectives: security, compactness, and signing efficiency. The ring dimension~$n$ and modulus~$q$ determine the ambient NTRU/Ring-SIS scale. The parameters $s_d$ and $\sigma_u$ induce two different norm quantities that must be kept distinct in the concrete discussion:
++\[
++  B_d := s_d\sqrt{2n},
++  \qquad
++  B_x := \sigma_u\sqrt{2n+4},
++  \qquad
++  B_k := B_d + B_x.
++\]
++Throughout the main body, $B_k$ is the \emph{conservative effective-key bound} used in $\Setup$, in the correctness analysis, and in the security reduction. When discussing restart behavior, we also record the user-secret scale~$B_x$ and the corresponding proxy ratio $\alpha_{\mathrm{proxy}} := r/B_x$. This proxy is retained only for implementation-oriented intuition and is \emph{not} the quantity used in the theorem-level Ring-SIS bound.
+ 
+-Guided by these trade-offs, we use the lattice estimator~\cite{LatticeEstimator} to approximate core-SVP hardness and retain two concrete operating points, shown in Table~\ref{tab:params}. Set~I is the most compact archived-signature point. Set~III is the recommended practical point for interactive multi-party signing.
++Guided by these trade-offs, we retain two concrete operating points, shown in Table~\ref{tab:params}. Set~I is the most compact archived-signature point. Set~III is the recommended practical point for interactive multi-party signing.
+ 
+ \begin{table}[ht]
+ \centering
+@@ -1032,10 +1040,11 @@
+ $\sigma_u$ (user key) & 2.60 & 1.45 \\
+ $r$ & 128 & 325 \\
+ $\kappa$ & 58 & 128 \\
+-$B_k = B_d + B_x$ & 83.3 & 65.8 \\
+-$\alpha = r/B_k$ & 1.54 & 4.94 \\
+-Per-step rejection & $\approx 0.011$ & $< 2^{-111}$ \\
+-Overall rejection & $\approx 0.47$ & negligible \\
++$B_d = s_d\sqrt{2n}$ & $160.0$ & $135.8$ \\
++$B_x = \sigma_u\sqrt{2n+4}$ & $83.4$ & $65.7$ \\
++$B_k = B_d + B_x$ & $243.4$ & $201.4$ \\
++$\alpha_{\mathrm{eff}} = r/B_k$ & $0.53$ & $1.61$ \\
++$\alpha_{\mathrm{proxy}} = r/B_x$ & $1.54$ & $4.95$ \\
+ \bottomrule
+ \end{tabular}
+ \end{table}
+@@ -1050,69 +1059,62 @@
+ 
+ \begin{table}[ht]
+ \centering
+-\caption{Group signing success probability for $N=10$ signers.}\label{tab:group_restart}
++\caption{Proxy group signing success for $N=10$ signers (legacy heuristic using $\alpha_{\mathrm{proxy}}=r/B_x$, not the theorem-level bound).}\label{tab:group_restart}
+ \smallskip
+ \begin{tabular}{@{}lcccc@{}}
+ \toprule
+ \textbf{Parameter Set} & $p_{\mathrm{succ}}$ \textbf{(per signer)} & $P_{\mathrm{group}}$ ($N\!=\!10$) & \textbf{E[attempts]} & \textbf{E[restarts]} \\
+ \midrule
+-Set~I ($\alpha \approx 1.54$) & $\approx 0.531$ & $\approx 0.002$ & $\approx 600$ & $\approx 599$ \\
+-Set~III ($\alpha \approx 4.94$) & $\approx 1 - 2^{-100}$ & $\approx 1$ & $1$ & $0$ \\
++Set~I ($\alpha_{\mathrm{proxy}} \approx 1.54$) & $\approx 0.531$ & $\approx 0.002$ & $\approx 600$ & $\approx 599$ \\
++Set~III ($\alpha_{\mathrm{proxy}} \approx 4.95$) & $\approx 1 - 2^{-100}$ & $\approx 1$ & $1$ & $0$ \\
+ \bottomrule
+ \end{tabular}
+ \end{table}
+ 
+ \begin{remark}[Practical Parameter Recommendation]\label{rem:practical_params}
+-Table~\ref{tab:group_restart} highlights the central operational distinction between the two sets. Set~I achieves the most compact archived signature, but for $N=10$ it gives only about $0.53^{10} \approx 0.002$ group success per attempt, so one expects roughly $600$ full-group attempts on average. Pipelining lowers the cost of each restart, but it does not remove the repeated online communication. For practical interactive deployment, especially when $N\ge 5$, \textbf{Set~III is therefore the recommended practical operating point}: it is effectively non-aborting and completes in exactly two rounds end-to-end.
++Table~\ref{tab:group_restart} is intentionally labeled as a \emph{proxy} analysis: it reproduces the implementation-oriented restart heuristic from the earlier draft using the user-secret scale~$B_x$, whereas the proof and the theorem-level Ring-SIS bound use the conservative effective-key quantity $B_k = B_d + B_x$. With that caveat, the qualitative operational ordering is unchanged. Set~I remains the most compact archived-signature point, but it is restart-sensitive in interactive signing; Set~III is the only retained point that looks operationally clean for multi-party deployment. Pipelining lowers the cost of each restart, but it does not remove the repeated online communication.
+ \end{remark}
+ 
+ \subsection{Concrete Security Estimation}\label{sec:secestimate}
+ 
+-The security of the scheme reduces to Ring-SIS on the NTRU lattice defined by~$a$. The reduction is non-tight (Section~\ref{sec:tightness}), and the theorem statements are expressed in terms of the intermediate quantity $\Pr[W_3]$. The table below should therefore be read as an \emph{indicative} concrete estimate that keeps the dominant target-guess and forking losses while suppressing negligible statistical terms. It is useful for calibration, but it does not replace a fully instantiated concrete proof.
++The security of the scheme reduces to Ring-SIS on the NTRU lattice defined by~$a$. The reduction is non-tight (Section~\ref{sec:tightness}), and the theorem statements are expressed in terms of the intermediate quantity $\Pr[W_3]$. Accordingly, the table below is no longer presented as a bit-security estimate. Instead, it records the concrete bookkeeping consequences of the current extractor bound and makes explicit where the present proof ceases to support a meaningful theorem-level calibration.
+ 
+-\paragraph{Underlying lattice hardness.}
+-For Ring-SIS parameters $(n, q, \beta)$, the best known attack strategy is to search for a short vector in $\Lambda_q^\perp(a)$ using lattice reduction, typically modeled through BKZ. The hardness is summarized by the \emph{core-SVP dimension}~$d$, which approximates the dimension of the underlying SVP oracle calls. Following Albrecht et al.~\cite{LatticeEstimator}, we estimate the core-SVP hardness of each retained parameter set as follows:
++\paragraph{What the concrete table now measures.}
++Once the concrete convention is fixed at the conservative effective-key bound $B_k = B_d + B_x$, the theorem-level extractor of Section~\ref{sec:security} yields the same norm target in the Type~I and Type~II cases:
++\[
++  \beta_{\mathrm{thm}} = 2B_s + 2\kappa B_k |L^*|.
++\]
++Table~\ref{tab:secestimate} therefore records the resulting bookkeeping quantities directly. We instantiate it only for the illustrative case $N = |L^*| = 10$, which is the same scale used elsewhere in the performance discussion.
+ 
+ \begin{table}[ht]
+ \centering
+-\caption{Indicative concrete security estimation with simplified reduction-loss accounting.}\label{tab:secestimate}
++\caption{Theorem-level concrete bookkeeping after fixing $B_k = B_d + B_x$ (illustrative $N=|L^*|=10$).}\label{tab:secestimate}
+ \smallskip
+ \begin{tabular}{@{}lcc@{}}
+ \toprule
+ & \textbf{Set~I} & \textbf{Set~III} \\
+ \midrule
+-Ring-SIS parameters $(n, q)$ & $(512, 12289)$ & $(1024, 50177)$ \\
+-SIS bound $\beta$ (Type~I) & $2B_s + 2\kappa B_k$ & $2B_s + 2\kappa B_k$ \\
+-Core-SVP dimension $d$ & $\approx 390$ & $\approx 780$ \\
+-Core-SVP hardness (bits) & $\approx 143$ & $\approx 285$ \\
+-\midrule
+-\multicolumn{3}{@{}l@{}}{\emph{Reduction loss (Type~I, $q_P = 2^{10}$, $q_H = 2^{60}$, $q_S = 2^{20}$):}} \\
+-Target guess loss $\log_2(q_P+1)$ & 10 bits & 10 bits \\
+-Forking loss $\log_2(q_H + q_S)$ & 60 bits & 60 bits \\
+-Total reduction loss & 70 bits & 70 bits \\
+-\midrule
+-\textbf{Effective security (Type~I)} & $\approx \mathbf{73}$ \textbf{bits} & $\approx \mathbf{215}$ \textbf{bits} \\
++Ring-SIS base parameters $(n,q)$ & $(512,12289)$ & $(1024,50177)$ \\
++Conservative effective-key bound $B_k$ & $243.4$ & $201.4$ \\
++Aggregated-signature bound $B_s=2Nr\sqrt{2n}$ & $81920$ & $294156.4$ \\
++Theorem-level $\beta_{\mathrm{thm}}$ & $\approx 4.46\times 10^5$ & $\approx 1.10\times 10^6$ \\
++$\beta_{\mathrm{thm}}/q$ & $\approx 36.3$ & $\approx 22.0$ \\
++Concrete status & $\beta_{\mathrm{thm}} > q$ & $\beta_{\mathrm{thm}} > q$ \\
+ \midrule
+-\multicolumn{3}{@{}l@{}}{\emph{Reduction loss (Type~II, $q_U = 2^{10}$):}} \\
+-Target guess loss $\log_2(q_U+1)$ & 10 bits & 10 bits \\
+-Forking loss $\log_2(q_H + q_S)$ & 60 bits & 60 bits \\
+-Total reduction loss & 70 bits & 70 bits \\
+-\textbf{Effective security (Type~II)} & $\approx \mathbf{73}$ \textbf{bits} & $\approx \mathbf{215}$ \textbf{bits} \\
++\multicolumn{3}{@{}l@{}}{\emph{Dominant explicit reduction losses retained in Theorems~\ref{thm:security} and~\ref{thm:securityII}:}} \\
++Target guess & $\log_2(q_P+1)$ or $\log_2(q_U+1)$ & same \\
++Forking loss & $\log_2(q_H+q_S)$ & same \\
+ \bottomrule
+ \end{tabular}
+ \end{table}
+ 
+ \paragraph{Interpretation.}
+-The effective security values reported in Table~\ref{tab:secestimate} are reduction-level estimates obtained by subtracting the dominant target-guess and forking losses, measured in bits, from the underlying core-SVP hardness. For Set~I, for example, the lattice problem itself provides about $143$~bits of hardness, but the simplified reduction accounting leaves only about $73$~bits. This gap is not unique to our scheme; it is a familiar consequence of Fiat--Shamir-style lattice proofs that rely on the forking lemma, including BLISS~\cite{BLISS2013}, HAETAE~\cite{HAETAE2024}, and Dilithium~\cite{Dilithium}.
+-
+-\begin{remark}[Falcon-512 Security Comparison]\label{rem:falcon_security}
+-Fouque et al.~\cite{FouqueFalcon2024} recently refined the concrete security analysis of Falcon-512, which uses the same base parameters $(n=512, q=12289)$ as our Set~I point, and concluded that its provable unforgeability level is about 113~bits rather than the commonly cited 120-bit target. Our Set~I point sits on the same underlying Ring-SIS hardness scale, but the security theorems in this paper remain asymptotic and non-tight. Accordingly, the phrase ``128-bit heuristic security level'' refers here to the target suggested by core-SVP hardness rather than to a fully instantiated end-to-end proof with all reduction losses and concrete trapdoor constants included. Readers should interpret claims for Set~I in that light. If one seeks a $\ge 128$-bit \emph{reduction-level} estimate under the simplified accounting of Table~\ref{tab:secestimate}, Set~III is the appropriate choice.
+-\end{remark}
++Table~\ref{tab:secestimate} is intentionally more cautious than the earlier draft. Under Definition~\ref{def:ntru}, once the conservative theorem-level quantity $\beta_{\mathrm{thm}}$ exceeds~$q$, the resulting Ring-SIS instance is no longer suitable for a sharp concrete hardness interpretation, because the stated norm ball already contains trivial $q$-multiple solutions. Consequently we no longer report core-SVP dimensions or reduction-level bit counts derived from this bound.
+ 
+-To target a $128$-bit \emph{reduction-level estimate} after the dominant target-guess and forking losses, one should therefore seek parameters with core-SVP hardness at least $128 + 70 \approx 198$~bits, which Set~III satisfies comfortably. Set~I still provides strong \emph{heuristic} security in the sense that solving the underlying lattice problem appears to require at least $\ge 143$ bits of work, but its reduction-level estimate is substantially weakened by the usual forking-lemma loss. This mirrors the broader Fiat--Shamir literature, where concrete parameter choices are often driven primarily by the hardness of the underlying lattice problem rather than by the reduced bound alone.
++This does \emph{not} mean that the ambient parameter pairs $(512,12289)$ and $(1024,50177)$ are themselves weak. Rather, it means that the present asymptotic extractor still loses too much norm for a theorem-backed concrete unforgeability claim. Any comparison with familiar NTRU-lattice operating points should therefore be read only as a heuristic scale comparison, not as a direct corollary of Theorems~\ref{thm:security} and~\ref{thm:securityII}.
+ 
+-\begin{remark}[Improving the Reduction Tightness]
+-The dominant reduction loss comes from the forking lemma, at roughly $60$ bits. Recent work on lossy identification schemes~\cite{HAETAE2024} and algebraic reductions may provide avenues toward tighter analyses. Another possibility is to adopt a Dilithium-style Fiat--Shamir with Aborts proof strategy, which avoids the forking lemma altogether, though at the price of larger signatures because it relies on uniform rather than iterative rejection sampling.
++\begin{remark}[Improving the Concrete Reduction]
++The dominant structural loss still comes from the forking lemma, but the more immediate obstacle to concrete calibration is the norm growth in the current extractor bound. A sharper convolution/norm analysis for the residual vector, or an alternative reduction that avoids summing all signer contributions so conservatively, would be needed before meaningful theorem-level bit-security estimates can be reported.
+ \end{remark}
+ 
+ \subsection{Signature Compactness Analysis}\label{sec:size}
+@@ -1175,11 +1177,11 @@
+ DualMS~\cite{DualMS2023} & $\sim\!4.8$ KB & compact PKI baseline & 1 & strongest concrete PKI comparator \\
+ CLMS~\cite{ChenCLMS2021} & not directly comparable & interactive & not directly comparable & same certificateless/NTRU family \\
+ IBMS-pka~\cite{ChenIBMSpka2025} & not directly comparable & non-interactive & 1 & no certificates, but identity-based \\
+-\textbf{Ours (Set~I)} & $\approx\!\mathbf{880}$ B & Round~2 still $\sim\!10$ KB for $N=10$ & $\approx 600$ & smallest archived signature \\
+-\textbf{Ours (Set~III)} & larger than Set~I & larger than Set~I & $1$ & recommended practical operating point \\
++\textbf{Ours (Set~I)} & $\approx\!\mathbf{880}$ B & Round~2 still $\sim\!10$ KB for $N=10$ & $\approx 600$ (proxy) & smallest archived signature \\
++\textbf{Ours (Set~III)} & larger than Set~I & larger than Set~I & $\approx 1$ (proxy) & recommended practical operating point \\
+ \bottomrule
+ \end{tabular}\\[4pt]
+-{\small Note: ``not directly comparable'' indicates a different key-management model and/or the absence of the registered-key revocation interface used in this paper.}
++{\small Note: ``not directly comparable'' indicates a different key-management model and/or the absence of the registered-key revocation interface used in this paper. The expected-attempt counts for our rows use the proxy restart heuristic of Table~\ref{tab:group_restart}, not the theorem-level bound.}
+ \end{table}
+ 
+ The compactness advantage has a direct structural explanation. Iterative rejection sampling permits a narrower Gaussian parameter~$r$, which concentrates the coefficient distribution of the aggregated vector~$\bvec{z}$ and improves entropy-coding efficiency. Full vector aggregation then collapses $N$ response vectors into one while adding only $N\kappa$ bits of lightweight metadata.
+@@ -1209,7 +1211,7 @@
+ 
+ \emph{(2) Security-model differences.} The comparison with PKI-based schemes such as DOTT, MuSig-L, and DualMS is not strictly apples-to-apples. Those schemes are proved in the standard PKI model, whereas our scheme is certificateless with a registered-key Type~I model and an explicit revocation interface.
+ 
+-\emph{(3) Security level.} Set~I reaches approximately $\approx 143$ bits of core-SVP hardness but only an indicative $\approx 73$-bit reduction-level estimate after simplified loss accounting. For a comparison at roughly matched reduction-level security, one should instead use Set~III, which produces larger signatures but is operationally much cleaner.
++\emph{(3) Security level.} The present reductions are asymptotic and structurally complete, but once the conservative convention $B_k = B_d + B_x$ is instantiated, the theorem-level norm bound satisfies $\beta_{\mathrm{thm}} > q$ for both retained sets. Accordingly, the comparison tables should be read primarily as size/round/verification comparisons rather than as matched theorem-backed bit-security claims.
+ 
+ \emph{(4) Source of compactness.} The size reduction comes from two independent factors: (a)~IRS enables a smaller Gaussian parameter~$r$, reducing per-coefficient entropy; and (b)~full vector aggregation collapses $N$ response vectors into one while adding only $N\kappa$ bits of lightweight metadata. Both mechanisms matter.
+ 
+@@ -1218,26 +1220,26 @@
+ 
+ \subsection{Quantitative Comparison of Rejection Sampling Efficiency}\label{sec:comparison}
+ 
+-The efficiency gain of iterative rejection sampling over classical methods is the main technical reason for the resulting compact signatures. Table~\ref{tab:rejcomp} compares the schemes in terms of the effective value of~$\alpha$, the repetition rate, and the overall rejection probability.
++The efficiency gain of iterative rejection sampling over classical methods is the main technical reason for the resulting compact signatures. Table~\ref{tab:rejcomp} compares the schemes at the level of their symbolic rejection behavior. We intentionally avoid plugging in a single global numeric value of~$\alpha$ here, because the paper now distinguishes the conservative proof-level ratio $\alpha_{\mathrm{eff}} = r/B_k$ from the separate proxy ratio $\alpha_{\mathrm{proxy}} = r/B_x$ used only for the restart heuristic.
+ 
+ \begin{table}[ht]
+ \centering
+-\caption{Rejection probability comparison ($\kappa=58$, $\norm{\tilde{\bvec{s}}}=B_k$).}\label{tab:rejcomp}
++\caption{Symbolic rejection-sampling comparison ($\kappa$-step view).}\label{tab:rejcomp}
+ \smallskip
+ \begin{tabular}{@{}lccc@{}}
+ \toprule
+ \textbf{Method} & \textbf{Effective $\alpha$} & \textbf{Repetition rate} & \textbf{Overall rejection} \\
+ \midrule
+-Lyubashevsky (unimodal) & $r/(\sqrt{\kappa}\norm{\tilde{\bvec{s}}})$ & $e^{1/(2\alpha^2)}$ & Impractical \\
+-BLISS (bimodal) & $r/(\sqrt{\kappa}\norm{\tilde{\bvec{s}}})$ & $1/\rho_\alpha(1)$ & $\sim\!95\%$ \\
+-\textbf{Ours (iterative)} & $r/\norm{\tilde{\bvec{s}}}$ & $M_\alpha$ per step & $\sim\!\mathbf{47\%}$ \\
++Lyubashevsky (unimodal) & $r/(\sqrt{\kappa}\norm{\tilde{\bvec{s}}})$ & $e^{1/(2\alpha^2)}$ & high at compact parameters \\
++BLISS (bimodal) & $r/(\sqrt{\kappa}\norm{\tilde{\bvec{s}}})$ & $1/\rho_\alpha(1)$ & high at compact parameters \\
++\textbf{Ours (iterative)} & $r/\norm{\tilde{\bvec{s}}}$ & $M_\alpha$ per step & $1-M_\alpha^{-\kappa}$ \\
+ \bottomrule
+ \end{tabular}
+ \end{table}
+ 
+-The mechanism is straightforward. In non-iterative constructions, rejection sampling must handle $\norm{\bvec{s}\cdot c} \approx \sqrt{\kappa}\norm{\bvec{s}}$ in a single step, which shrinks the effective value of~$\alpha$ by a factor of~$\sqrt{\kappa}$. Our iterative design instead processes one rotated column $x^j\cdot\bvec{s}$ at a time, and each such vector has norm~$\norm{\bvec{s}}$. Hence the effective ratio remains $r/\norm{\bvec{s}}$. Although this requires $\kappa$ consecutive successful steps, the per-step rejection rate is low enough (about $1\%$) that the overall behavior is still substantially better than that of single-step high-rejection methods.
++The mechanism is straightforward. In non-iterative constructions, rejection sampling must handle $\norm{\bvec{s}\cdot c} \approx \sqrt{\kappa}\norm{\bvec{s}}$ in a single step, which shrinks the effective value of~$\alpha$ by a factor of~$\sqrt{\kappa}$. Our iterative design instead processes one rotated column $x^j\cdot\bvec{s}$ at a time, and each such vector has norm~$\norm{\bvec{s}}$. Hence the effective ratio remains $r/\norm{\bvec{s}}$.
+ 
+-Equivalently, if one fixes a target overall rejection probability of about $50\%$, the iterative method can work with a smaller~$r$ because it operates at a larger effective~$\alpha$. The resulting response vectors therefore have smaller coefficients, which directly translates into shorter signatures.
++Whether this symbolic advantage translates into a comfortable concrete restart profile depends on the norm convention one substitutes. The paper therefore separates the conservative theorem-level quantity $B_k$ from the legacy proxy quantity $B_x$: the former governs the reductions, while the latter is used only to preserve an implementation-oriented restart heuristic for qualitative discussion.
+ 
+ \subsection{Computational Complexity}
+ 
+@@ -1327,9 +1329,9 @@
+ \item \emph{epoch-scoped validity binding}, which ties every signature to a specific published revocation digest without requiring key renewal.
+ \end{enumerate}
+ 
+-From the security perspective, we obtained a reduction for the Type~I adversary in a registered-key certificateless model and a complete reduction for the Type~II adversary (malicious KGC), both to Ring-SIS on NTRU lattices. The main remaining proof conservatism is no longer a public-key replacement gap, but rather the classical-ROM/forking methodology and the coarse bounded-norm emulation used for the IRS sign bits.
++From the security perspective, we obtained game-based reductions for both the Type~I adversary in the registered-key certificateless model and the Type~II adversary (malicious KGC), both to Ring-SIS on NTRU lattices. The main remaining proof conservatism is no longer a public-key replacement gap, but rather the classical-ROM/forking methodology, the coarse bounded-norm emulation used for the IRS sign bits, and the still-loose theorem-level norm bound in the final extractor.
+ 
+-From the performance perspective, the scheme offers two clearly separated operating points. Set~I gives the most compact archived multi-signature, about 880~bytes for $N=10$ signers after combinatorial challenge encoding, but it is restart-heavy in end-to-end multi-party signing. Set~III is the recommended practical operating point because it is effectively non-aborting and retains a much stronger reduction-level margin.
++From the performance perspective, the scheme offers two clearly separated operating points. Set~I gives the most compact archived multi-signature, about 880~bytes for $N=10$ signers after combinatorial challenge encoding, but it should be viewed primarily as a compact archival point rather than as the default interactive setting. Set~III remains the recommended practical operating point. The main remaining gap is now not an incomplete adversarial model, but the distance between the asymptotic reduction and a non-vacuous concrete security calibration.
+ 
+ \paragraph{Open problems and future directions.}
+ \begin{itemize}[leftmargin=*,itemsep=2pt]
