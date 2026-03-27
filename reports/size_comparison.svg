@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560">
+<rect width="100%" height="100%" fill="white"/>
+<text x="490.0" y="32" text-anchor="middle" font-size="22" font-family="Arial" font-weight="600">Signature size comparison</text>
+<line x1="90" y1="490.0" x2="940" y2="490.0" stroke="#ececec"/>
+<text x="80" y="494.0" text-anchor="end" font-size="11" font-family="Arial">0.00</text>
+<line x1="90" y1="404.0" x2="940" y2="404.0" stroke="#ececec"/>
+<text x="80" y="408.0" text-anchor="end" font-size="11" font-family="Arial">211.90</text>
+<line x1="90" y1="318.0" x2="940" y2="318.0" stroke="#ececec"/>
+<text x="80" y="322.0" text-anchor="end" font-size="11" font-family="Arial">423.81</text>
+<line x1="90" y1="232.0" x2="940" y2="232.0" stroke="#ececec"/>
+<text x="80" y="236.0" text-anchor="end" font-size="11" font-family="Arial">635.71</text>
+<line x1="90" y1="146.0" x2="940" y2="146.0" stroke="#ececec"/>
+<text x="80" y="150.0" text-anchor="end" font-size="11" font-family="Arial">847.62</text>
+<line x1="90" y1="60.0" x2="940" y2="60.0" stroke="#ececec"/>
+<text x="80" y="64.0" text-anchor="end" font-size="11" font-family="Arial">1059.52</text>
+<line x1="90.0" y1="60" x2="90.0" y2="490" stroke="#f6f6f6"/>
+<text x="90.0" y="512" text-anchor="middle" font-size="12" font-family="Arial">2</text>
+<line x1="211.4" y1="60" x2="211.4" y2="490" stroke="#f6f6f6"/>
+<text x="211.4" y="512" text-anchor="middle" font-size="12" font-family="Arial">4</text>
+<line x1="454.3" y1="60" x2="454.3" y2="490" stroke="#f6f6f6"/>
+<text x="454.3" y="512" text-anchor="middle" font-size="12" font-family="Arial">8</text>
+<line x1="940.0" y1="60" x2="940.0" y2="490" stroke="#f6f6f6"/>
+<text x="940.0" y="512" text-anchor="middle" font-size="12" font-family="Arial">16</text>
+<line x1="90" y1="490" x2="940" y2="490" stroke="#333"/>
+<line x1="90" y1="60" x2="90" y2="490" stroke="#333"/>
+<polyline points="90.0,300.9 211.4,285.5 454.3,254.6 940.0,192.9" fill="none" stroke="#4e79a7" stroke-width="2.5"/>
+<circle cx="90.0" cy="300.9" r="3.5" fill="#4e79a7"/>
+<circle cx="211.4" cy="285.5" r="3.5" fill="#4e79a7"/>
+<circle cx="454.3" cy="254.6" r="3.5" fill="#4e79a7"/>
+<circle cx="940.0" cy="192.9" r="3.5" fill="#4e79a7"/>
+<line x1="620" y1="84" x2="642" y2="84" stroke="#4e79a7" stroke-width="2.5"/>
+<text x="650" y="88" font-size="12" font-family="Arial" font-weight="400">IBMS-NTRU</text>
+<polyline points="90.0,387.7 211.4,372.3 454.3,341.5 940.0,279.8" fill="none" stroke="#e15759" stroke-width="4.0"/>
+<circle cx="90.0" cy="387.7" r="5" fill="#e15759"/>
+<circle cx="211.4" cy="372.3" r="5" fill="#e15759"/>
+<circle cx="454.3" cy="341.5" r="5" fill="#e15759"/>
+<circle cx="940.0" cy="279.8" r="5" fill="#e15759"/>
+<line x1="620" y1="106" x2="642" y2="106" stroke="#e15759" stroke-width="4.0"/>
+<text x="650" y="110" font-size="12" font-family="Arial" font-weight="700">CL-NTRU-MS-IRS (Ours)</text>
+<polyline points="90.0,214.0 211.4,198.6 454.3,167.8 940.0,106.1" fill="none" stroke="#59a14f" stroke-width="2.5"/>
+<circle cx="90.0" cy="214.0" r="3.5" fill="#59a14f"/>
+<circle cx="211.4" cy="198.6" r="3.5" fill="#59a14f"/>
+<circle cx="454.3" cy="167.8" r="3.5" fill="#59a14f"/>
+<circle cx="940.0" cy="106.1" r="3.5" fill="#59a14f"/>
+<line x1="620" y1="128" x2="642" y2="128" stroke="#59a14f" stroke-width="2.5"/>
+<text x="650" y="132" font-size="12" font-family="Arial" font-weight="400">NI-IBMS-PKA</text>
+<polyline points="90.0,387.7 211.4,372.3 454.3,341.5 940.0,279.8" fill="none" stroke="#af7aa1" stroke-width="2.5"/>
+<circle cx="90.0" cy="387.7" r="3.5" fill="#af7aa1"/>
+<circle cx="211.4" cy="372.3" r="3.5" fill="#af7aa1"/>
+<circle cx="454.3" cy="341.5" r="3.5" fill="#af7aa1"/>
+<circle cx="940.0" cy="279.8" r="3.5" fill="#af7aa1"/>
+<line x1="620" y1="150" x2="642" y2="150" stroke="#af7aa1" stroke-width="2.5"/>
+<text x="650" y="154" font-size="12" font-family="Arial" font-weight="400">CLSAS-NTRU</text>
+<text x="950.0" y="269.8" font-size="12" font-family="Arial" font-weight="700" fill="#e15759">Ours</text>
+<text x="515.0" y="542" text-anchor="middle" font-size="14" font-family="Arial">Number of signers</text>
+<text x="22" y="275.0" transform="rotate(-90,22,275.0)" text-anchor="middle" font-size="14" font-family="Arial">Signature size (bytes)</text>
+</svg>
